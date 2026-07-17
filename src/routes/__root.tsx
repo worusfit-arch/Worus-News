@@ -77,13 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Worus New — Notícias de Saúde e Esporte" },
+      { title: "Worus News — Notícias de Saúde e Esporte" },
       {
         name: "description",
         content:
           "Curadoria semanal das principais notícias de saúde e esporte: musculação, corrida, jiu-jitsu, surf, yoga e muito mais.",
       },
-      { property: "og:title", content: "Worus New — Notícias de Saúde e Esporte" },
+      { property: "og:title", content: "Worus News — Notícias de Saúde e Esporte" },
       {
         property: "og:description",
         content:
