@@ -167,15 +167,11 @@ function Index() {
     setActiveCategory(key);
   }
 
-  /* Agrupa notícias por categoria, mantendo a ordem de aparição */
-  const groupedNews: Record<string, NewsCard[]> = {};
-  for (const n of NEWS) {
-    if (!groupedNews[n.cat]) groupedNews[n.cat] = [];
-    groupedNews[n.cat].push(n);
-  }
-
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
+      {/* Brand strip */}
+      <div className="h-1 bg-gradient-to-r from-brand via-brand-dark to-brand" />
+
       {/* Header */}
       <header className="border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur-md z-50">
         <div className="max-w-6xl mx-auto px-4 py-4">
@@ -270,27 +266,27 @@ function Index() {
         </section>
 
         {/* Ad banner */}
-        <div className="mb-14 p-1 bg-slate-50 rounded-xl">
-          <div className="border-2 border-dashed border-slate-200 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative">
+        <div className="mb-14 p-1 bg-gradient-to-r from-brand/10 via-brand/5 to-brand/10 rounded-2xl">
+          <div className="bg-white rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative">
             <span className="absolute top-2 right-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
               Publicidade
             </span>
             <div className="flex items-center gap-4">
-              <div className="size-12 bg-white rounded flex items-center justify-center font-serif font-extrabold text-brand shadow-sm ring-1 ring-slate-100">
-                F+
+              <div className="size-12 bg-brand/10 rounded-full flex items-center justify-center font-serif font-extrabold text-brand">
+                W
               </div>
               <div>
                 <h4 className="font-bold text-slate-800 uppercase tracking-tight">
-                  Proteína Pura Max
+                  Worus Fit — Desafios Esportivos
                 </h4>
                 <p className="text-sm text-slate-500">
-                  O combustível que seu treino precisa para o próximo nível.
+                  Treine, desafie amigos e ganhe coins em 13 modalidades.
                 </p>
               </div>
             </div>
             <button
               type="button"
-              className="px-6 py-2 bg-slate-900 text-white text-sm font-bold rounded-full hover:bg-slate-800 transition-colors"
+              className="px-6 py-2 bg-brand text-white text-sm font-bold rounded-full hover:bg-brand-dark transition-colors"
             >
               Saiba Mais
             </button>
@@ -298,72 +294,49 @@ function Index() {
         </div>
 
         {/* Feed */}
-        <section id="feed" className="mb-6 flex items-baseline justify-between scroll-mt-32">
+        <section id="feed" className="mb-8 flex items-baseline justify-between scroll-mt-32">
           <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
             Edição da semana
           </h3>
-          <span className="text-xs text-slate-400">{NEWS.length} matérias</span>
+          <span className="text-xs text-brand font-semibold">{NEWS.length} matérias</span>
         </section>
 
-        {Object.entries(groupedNews).map(([catKey, articles], groupIndex) => {
-          const cat = CATEGORIES[catKey];
-          return (
-            <section key={catKey} className="mb-12">
-              {/* Section divider */}
-              <div id={`cat-${catKey}`} className="scroll-mt-32 flex items-center gap-3 mb-6">
-                <span
-                  className={`inline-block px-3 py-1 ${cat.badgeBg} ${cat.badgeText} text-[11px] font-bold rounded-full tracking-wider`}
-                >
-                  {cat.label}
-                </span>
-                <div className="flex-1 h-px bg-slate-100" />
-                <span className="text-[11px] text-slate-400">
-                  {articles.length} {articles.length === 1 ? "matéria" : "matérias"}
-                </span>
-              </div>
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {NEWS.map((n, i) => (
+            <div key={n.title} className={i === 0 ? "md:col-span-2 lg:col-span-2" : ""}>
+              <NewsArticle
+                news={n}
+                isExpanded={expandedArticle === n.title}
+                onToggle={() => toggleArticle(n.title)}
+                featured={i === 0}
+              />
+            </div>
+          ))}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {articles.map((n) => (
-                  <NewsArticle
-                    key={n.title}
-                    news={n}
-                    isExpanded={expandedArticle === n.title}
-                    onToggle={() => toggleArticle(n.title)}
-                  />
-                ))}
-              </div>
-
-              {/* Sponsored card after 2nd group */}
-              {groupIndex === 1 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-                  <article className="p-6 bg-brand/5 rounded-xl flex flex-col justify-between border border-brand/15 relative min-h-[320px]">
-                    <span className="absolute top-3 right-4 text-[9px] font-bold text-brand uppercase tracking-widest">
-                      Patrocinado
-                    </span>
-                    <div>
-                      <span className="inline-block px-2 py-0.5 bg-white/70 text-brand-dark text-[10px] font-bold rounded mb-4 tracking-wider">
-                        WORUS FIT
-                      </span>
-                      <h3 className="text-xl font-bold font-serif leading-snug text-slate-900 mb-3">
-                        Desafie seus amigos e ganhe coins treinando.
-                      </h3>
-                      <p className="text-sm text-slate-600 mb-6">
-                        Crie desafios em 13 modalidades, acompanhe rankings e evolua junto com a
-                        comunidade.
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="w-full py-3 bg-brand hover:bg-brand-dark transition-colors text-white font-bold rounded-full text-sm uppercase tracking-widest"
-                    >
-                      Baixar agora
-                    </button>
-                  </article>
-                </div>
-              )}
-            </section>
-          );
-        })}
+          {/* Sponsored card */}
+          <article className="p-6 bg-brand/5 rounded-2xl flex flex-col justify-between border border-brand/20 relative min-h-[320px]">
+            <span className="absolute top-3 right-4 text-[9px] font-bold text-brand uppercase tracking-widest">
+              Patrocinado
+            </span>
+            <div>
+              <span className="inline-block px-3 py-1 bg-brand/10 text-brand-dark text-[10px] font-bold rounded-full mb-4 tracking-wider">
+                WORUS FIT
+              </span>
+              <h3 className="text-xl font-bold font-serif leading-snug text-slate-900 mb-3">
+                Desafie seus amigos e ganhe coins treinando.
+              </h3>
+              <p className="text-sm text-slate-600 mb-6">
+                Crie desafios em 13 modalidades, acompanhe rankings e evolua junto com a comunidade.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="w-full py-3 bg-brand hover:bg-brand-dark transition-colors text-white font-bold rounded-full text-sm uppercase tracking-widest"
+            >
+              Baixar agora
+            </button>
+          </article>
+        </section>
 
         {/* Signup */}
         <section className="mt-20 py-14 px-6 bg-slate-900 rounded-3xl text-center text-white relative overflow-hidden">
@@ -421,10 +394,10 @@ function Index() {
             <div>
               <h4 className="font-bold mb-4 text-sm">Categorias</h4>
               <ul className="space-y-2 text-sm text-slate-500">
-                <li className="hover:text-brand cursor-pointer">Musculação</li>
-                <li className="hover:text-brand cursor-pointer">Ar Livre</li>
-                <li className="hover:text-brand cursor-pointer">Lutas</li>
-                <li className="hover:text-brand cursor-pointer">Bem-Estar</li>
+                <li className="hover:text-brand cursor-pointer">Corrida</li>
+                <li className="hover:text-brand cursor-pointer">Academia</li>
+                <li className="hover:text-brand cursor-pointer">Surf</li>
+                <li className="hover:text-brand cursor-pointer">Jiu-Jitsu</li>
               </ul>
             </div>
             <div>
@@ -462,10 +435,12 @@ function NewsArticle({
   news,
   isExpanded,
   onToggle,
+  featured = false,
 }: {
   news: NewsCard;
   isExpanded: boolean;
   onToggle: () => void;
+  featured?: boolean;
 }) {
   const cat = CATEGORIES[news.cat];
 
@@ -473,7 +448,7 @@ function NewsArticle({
     return (
       <article
         id={`cat-${news.cat}`}
-        className="col-span-full bg-white rounded-2xl ring-2 ring-brand/40 overflow-hidden scroll-mt-32 shadow-lg shadow-brand/5"
+        className="bg-white rounded-2xl ring-2 ring-brand/30 overflow-hidden scroll-mt-32 shadow-xl shadow-brand/10"
       >
         <div className="w-full aspect-[21/9] overflow-hidden">
           <img
@@ -484,9 +459,9 @@ function NewsArticle({
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="p-6 md:p-10 max-w-3xl mx-auto">
+        <div className="border-l-4 border-brand p-6 md:p-10 max-w-3xl mx-auto">
           <span
-            className={`inline-block px-2 py-0.5 ${cat.badgeBg} ${cat.badgeText} text-[10px] font-bold rounded mb-4 tracking-wider`}
+            className={`inline-block px-3 py-1 ${cat.badgeBg} ${cat.badgeText} text-[10px] font-bold rounded-full mb-4 tracking-wider`}
           >
             {cat.label}
           </span>
@@ -498,7 +473,7 @@ function NewsArticle({
             <span>•</span>
             <span>{news.date}</span>
           </div>
-          <div className="space-y-4 text-slate-700 leading-relaxed">
+          <div className="space-y-4 text-slate-700 leading-relaxed text-[15px]">
             {news.content.map((paragraph, i) => (
               <p key={i}>{paragraph}</p>
             ))}
@@ -506,7 +481,7 @@ function NewsArticle({
           <button
             type="button"
             onClick={onToggle}
-            className="mt-10 inline-flex items-center gap-2 text-sm font-bold text-brand hover:text-brand-dark transition-colors"
+            className="mt-10 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-brand border border-brand/30 rounded-full hover:bg-brand hover:text-white transition-colors"
           >
             ← Fechar matéria
           </button>
@@ -515,10 +490,56 @@ function NewsArticle({
     );
   }
 
+  if (featured) {
+    return (
+      <article
+        id={`cat-${news.cat}`}
+        className="group cursor-pointer scroll-mt-32 bg-slate-50 rounded-2xl overflow-hidden ring-1 ring-slate-100 hover:ring-brand/30 transition-all hover:shadow-lg hover:shadow-brand/5"
+        role="button"
+        tabIndex={0}
+        onClick={onToggle}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onToggle();
+          }
+        }}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="w-full aspect-[4/3] md:aspect-auto overflow-hidden">
+            <img
+              src={news.image}
+              alt={news.title}
+              width={800}
+              height={600}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          </div>
+          <div className="p-6 md:p-8 flex flex-col justify-center border-l-4 border-brand">
+            <span
+              className={`inline-block w-fit px-3 py-1 ${cat.badgeBg} ${cat.badgeText} text-[10px] font-bold rounded-full mb-3 tracking-wider`}
+            >
+              {cat.label}
+            </span>
+            <h3 className="text-2xl md:text-3xl font-bold font-serif leading-snug group-hover:text-brand transition-colors mb-3">
+              {news.title}
+            </h3>
+            <p className="text-sm text-slate-500 mb-4 leading-relaxed">{news.excerpt}</p>
+            <div className="flex items-center gap-3 text-[11px] uppercase tracking-widest text-slate-400 font-semibold">
+              <span>{news.date}</span>
+              <span>•</span>
+              <span className="text-brand font-bold">Ler matéria →</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
   return (
     <article
       id={`cat-${news.cat}`}
-      className="group cursor-pointer scroll-mt-32 rounded-xl transition-shadow hover:shadow-md hover:shadow-brand/5"
+      className="group cursor-pointer scroll-mt-32 bg-slate-50 rounded-2xl overflow-hidden ring-1 ring-slate-100 hover:ring-brand/30 transition-all hover:shadow-lg hover:shadow-brand/5"
       role="button"
       tabIndex={0}
       onClick={onToggle}
@@ -529,7 +550,7 @@ function NewsArticle({
         }
       }}
     >
-      <div className="w-full aspect-[4/3] rounded-xl mb-4 overflow-hidden ring-1 ring-black/5">
+      <div className="w-full aspect-[4/3] overflow-hidden">
         <img
           src={news.image}
           alt={news.title}
@@ -539,18 +560,25 @@ function NewsArticle({
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
       </div>
-      <span
-        className={`inline-block px-2 py-0.5 ${cat.badgeBg} ${cat.badgeText} text-[10px] font-bold rounded mb-2 tracking-wider`}
-      >
-        {cat.label}
-      </span>
-      <h3 className="text-xl font-bold font-serif leading-snug group-hover:text-brand transition-colors mb-2">
-        {news.title}
-      </h3>
-      <p className="text-sm text-slate-500 line-clamp-2 mb-2">{news.excerpt}</p>
-      <p className="text-[11px] uppercase tracking-widest text-slate-400 font-semibold">
-        {news.date}
-      </p>
+      <div className="p-5 border-l-4 border-brand">
+        <span
+          className={`inline-block px-3 py-1 ${cat.badgeBg} ${cat.badgeText} text-[10px] font-bold rounded-full mb-2 tracking-wider`}
+        >
+          {cat.label}
+        </span>
+        <h3 className="text-lg font-bold font-serif leading-snug group-hover:text-brand transition-colors mb-2">
+          {news.title}
+        </h3>
+        <p className="text-sm text-slate-500 line-clamp-2 mb-3">{news.excerpt}</p>
+        <div className="flex items-center justify-between">
+          <p className="text-[11px] uppercase tracking-widest text-slate-400 font-semibold">
+            {news.date}
+          </p>
+          <span className="text-[11px] font-bold text-brand uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
+            Ler →
+          </span>
+        </div>
+      </div>
     </article>
   );
 }
