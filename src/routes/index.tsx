@@ -183,7 +183,7 @@ function Index() {
                 </div>
                 <h1 className="text-2xl font-serif font-extrabold tracking-tight">
                   <span className="text-slate-900">WORUS</span>{" "}
-                  <span className="text-brand-dark">NEW</span>
+                  <span className="text-brand-dark">NEWS</span>
                 </h1>
               </a>
               <p className="text-[11px] text-slate-500 mt-1 uppercase tracking-[0.18em]">
@@ -383,7 +383,7 @@ function Index() {
                 </div>
                 <span className="text-xl font-serif font-extrabold tracking-tight">
                   <span className="text-slate-900">WORUS</span>{" "}
-                  <span className="text-brand-dark">NEW</span>
+                  <span className="text-brand-dark">NEWS</span>
                 </span>
               </div>
               <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
@@ -412,7 +412,7 @@ function Index() {
           </div>
           <div className="border-t border-slate-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-slate-400">
-              © 2024 Worus New Newsletter. Todos os direitos reservados.
+              © 2024 Worus News Newsletter. Todos os direitos reservados.
             </p>
             <div className="flex gap-3">
               {["IG", "X", "YT"].map((s) => (
