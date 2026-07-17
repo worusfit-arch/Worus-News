@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/hero.jpg";
 import corridaImg from "@/assets/corrida.jpg";
@@ -10,6 +10,9 @@ import muaythaiImg from "@/assets/muaythai.jpg";
 import futebolImg from "@/assets/futebol.jpg";
 import voleiImg from "@/assets/volei.jpg";
 import crossfitImg from "@/assets/crossfit.jpg";
+import yogaImg from "@/assets/yoga.jpg";
+import natacaoImg from "@/assets/natacao.jpg";
+import pilatesImg from "@/assets/pilates.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -17,24 +20,50 @@ export const Route = createFileRoute("/")({
 
 type Category = {
   label: string;
+  emoji: string;
   badgeBg: string;
   badgeText: string;
 };
 
 const CATEGORIES: Record<string, Category> = {
-  corrida: { label: "CORRIDA", badgeBg: "bg-orange-100", badgeText: "text-orange-700" },
-  academia: { label: "ACADEMIA", badgeBg: "bg-emerald-100", badgeText: "text-emerald-700" },
-  calistenia: { label: "CALISTENIA", badgeBg: "bg-amber-100", badgeText: "text-amber-700" },
-  ciclismo: { label: "CICLISMO", badgeBg: "bg-lime-100", badgeText: "text-lime-700" },
-  crossfit: { label: "CROSSFIT", badgeBg: "bg-teal-100", badgeText: "text-teal-700" },
-  boxe: { label: "BOXE", badgeBg: "bg-red-100", badgeText: "text-red-700" },
-  futebol: { label: "FUTEBOL", badgeBg: "bg-sky-100", badgeText: "text-sky-700" },
-  beachtennis: { label: "BEACH TENNIS", badgeBg: "bg-cyan-100", badgeText: "text-cyan-700" },
-  surf: { label: "SURF", badgeBg: "bg-blue-100", badgeText: "text-blue-700" },
-  kitesurf: { label: "KITESURF", badgeBg: "bg-indigo-100", badgeText: "text-indigo-700" },
-  jiujitsu: { label: "JIU-JITSU", badgeBg: "bg-rose-100", badgeText: "text-rose-700" },
-  skate: { label: "SKATE", badgeBg: "bg-violet-100", badgeText: "text-violet-700" },
-  tenis: { label: "TÊNIS", badgeBg: "bg-fuchsia-100", badgeText: "text-fuchsia-700" },
+  corrida: {
+    label: "CORRIDA",
+    emoji: "🏃",
+    badgeBg: "bg-orange-100",
+    badgeText: "text-orange-700",
+  },
+  academia: {
+    label: "ACADEMIA",
+    emoji: "🏋️",
+    badgeBg: "bg-emerald-100",
+    badgeText: "text-emerald-700",
+  },
+  calistenia: {
+    label: "CALISTENIA",
+    emoji: "🤸",
+    badgeBg: "bg-amber-100",
+    badgeText: "text-amber-700",
+  },
+  ciclismo: { label: "CICLISMO", emoji: "🚴", badgeBg: "bg-lime-100", badgeText: "text-lime-700" },
+  crossfit: { label: "CROSSFIT", emoji: "🔥", badgeBg: "bg-teal-100", badgeText: "text-teal-700" },
+  boxe: { label: "BOXE", emoji: "🥊", badgeBg: "bg-red-100", badgeText: "text-red-700" },
+  futebol: { label: "FUTEBOL", emoji: "⚽", badgeBg: "bg-sky-100", badgeText: "text-sky-700" },
+  beachtennis: {
+    label: "BEACH TENNIS",
+    emoji: "🏸",
+    badgeBg: "bg-cyan-100",
+    badgeText: "text-cyan-700",
+  },
+  surf: { label: "SURF", emoji: "🏄", badgeBg: "bg-blue-100", badgeText: "text-blue-700" },
+  kitesurf: {
+    label: "KITESURF",
+    emoji: "🪁",
+    badgeBg: "bg-indigo-100",
+    badgeText: "text-indigo-700",
+  },
+  jiujitsu: { label: "JIU-JITSU", emoji: "🥋", badgeBg: "bg-rose-100", badgeText: "text-rose-700" },
+  skate: { label: "SKATE", emoji: "🛹", badgeBg: "bg-violet-100", badgeText: "text-violet-700" },
+  tenis: { label: "TÊNIS", emoji: "🎾", badgeBg: "bg-fuchsia-100", badgeText: "text-fuchsia-700" },
 };
 
 type NewsCard = {
@@ -153,11 +182,88 @@ const NEWS: NewsCard[] = [
       "Comissões técnicas apostam que o crescimento do número de praticantes deve elevar o nível competitivo do circuito nos próximos anos, com mais investimento em categorias de base.",
     ],
   },
+  {
+    cat: "calistenia",
+    image: yogaImg,
+    title: "Calistenia ao ar livre: como montar um treino completo sem equipamento.",
+    excerpt: "Parques e praças se transformam em academias para quem treina com o peso do corpo.",
+    date: "16 MAI · 5 min",
+    author: "Lucas Ferreira",
+    content: [
+      "A calistenia vem ganhando adeptos entre praticantes que buscam um treino funcional sem depender de academia, usando apenas o peso do próprio corpo e estruturas públicas como barras e bancos de praça.",
+      "Treinadores especializados recomendam que iniciantes comecem com variações facilitadas de movimentos clássicos como flexão, agachamento e barra fixa, progredindo em dificuldade apenas quando a execução estiver dominada.",
+      "O maior diferencial apontado por quem migrou do treino convencional para a calistenia é o ganho de consciência corporal e mobilidade articular, benefícios que se refletem diretamente na qualidade dos movimentos do dia a dia.",
+    ],
+  },
+  {
+    cat: "crossfit",
+    image: crossfitImg,
+    title: "CrossFit Games 2024: o que esperar da seletiva sul-americana.",
+    excerpt: "Atletas brasileiros se preparam para a competição mais disputada do ano.",
+    date: "16 MAI · 6 min",
+    author: "Ricardo Silva",
+    content: [
+      "A seletiva sul-americana do CrossFit Games deste ano promete ser a mais disputada desde que a região ganhou vagas diretas para a fase final, com um número recorde de atletas classificados.",
+      "Equipes brasileiras vêm apostando em periodização mais longa e específica, com foco nos movimentos que historicamente aparecem nas provas surpresa da competição, como rope climb e handstand walk.",
+      "Analistas do esporte apontam que o nível técnico dos competidores sul-americanos subiu consideravelmente nos últimos ciclos, com chances reais de pódio na fase mundial pela primeira vez.",
+    ],
+  },
+  {
+    cat: "kitesurf",
+    image: natacaoImg,
+    title: "Kitesurf no Ceará: por que o estado é referência mundial.",
+    excerpt: "Ventos constantes e praias extensas fazem do litoral cearense o destino favorito.",
+    date: "15 MAI · 4 min",
+    author: "Marina Souza",
+    content: [
+      "O litoral do Ceará reúne condições naturais consideradas ideais para a prática do kitesurf: ventos constantes acima de 15 nós durante a maior parte do ano, águas rasas e praias com extensão suficiente para manobras de longa distância.",
+      "Praias como Cumbuco e Jericoacoara já figuraram em rankings internacionais entre os melhores spots do mundo, atraindo praticantes de dezenas de países durante a alta temporada de ventos.",
+      "Escolas locais relatam crescimento ano a ano no número de alunos iniciantes, muitos deles turistas que experimentam o esporte pela primeira vez e acabam retornando em temporadas seguintes para avançar no nível técnico.",
+    ],
+  },
+  {
+    cat: "skate",
+    image: pilatesImg,
+    title: "Skate park de São Paulo recebe evento internacional inédito.",
+    excerpt: "Circuito reúne skatistas de 12 países e coloca o Brasil no mapa do street mundial.",
+    date: "15 MAI · 3 min",
+    author: "Thiago Ramos",
+    content: [
+      "A capital paulista recebe pela primeira vez uma etapa de um circuito internacional de street skate, reunindo atletas de 12 países em uma pista projetada especificamente para o evento.",
+      "A competição marca um momento importante para o skate brasileiro, que desde a inclusão da modalidade nos Jogos Olímpicos vem recebendo mais investimento em infraestrutura e formação de atletas.",
+      "Organizadores destacam que o evento terá transmissão ao vivo e uma programação paralela voltada para a comunidade local, com oficinas de iniciação ao skate para crianças e adolescentes.",
+    ],
+  },
+  {
+    cat: "tenis",
+    image: corridaImg,
+    title: "Tênis amador: como evitar a lesão mais comum entre iniciantes.",
+    excerpt: "Cotovelo de tenista atinge 40% dos praticantes que não ajustam a empunhadura.",
+    date: "14 MAI · 5 min",
+    author: "Ana Paula Vieira",
+    content: [
+      "A epicondilite lateral, popularmente conhecida como cotovelo de tenista, é a lesão mais frequente entre praticantes amadores da modalidade, atingindo cerca de 40% dos que jogam mais de duas vezes por semana.",
+      "Fisioterapeutas especializados apontam que a principal causa não é o excesso de jogo, mas sim o uso de empunhadura inadequada combinada com raquetes pesadas demais para o nível do praticante.",
+      "A prevenção passa por três ajustes simples: escolher uma raquete com peso e grip compatíveis com o biotipo, fazer alongamentos específicos de antebraço antes e depois do jogo, e fortalecer a musculatura extensora do punho com exercícios de baixa carga.",
+    ],
+  },
 ];
 
 function Index() {
   const [expandedArticle, setExpandedArticle] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   function toggleArticle(title: string) {
     setExpandedArticle((prev) => (prev === title ? null : title));
@@ -165,6 +271,7 @@ function Index() {
 
   function handleCategoryClick(key: string | null) {
     setActiveCategory(key);
+    setMenuOpen(false);
   }
 
   return (
@@ -175,56 +282,72 @@ function Index() {
       {/* Header */}
       <header className="border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur-md z-50">
         <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <a href="#top" className="flex items-center gap-2">
-                <div className="size-8 bg-brand rounded-lg flex items-center justify-center">
-                  <div className="size-3.5 bg-white rounded-full" />
-                </div>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2" ref={menuRef}>
+              <button
+                type="button"
+                onClick={() => setMenuOpen((prev) => !prev)}
+                className="size-9 bg-brand rounded-lg flex items-center justify-center hover:bg-brand-dark transition-colors relative"
+                aria-label="Menu de categorias"
+              >
+                <div
+                  className={`size-3.5 bg-white rounded-full transition-transform ${menuOpen ? "scale-75" : ""}`}
+                />
+              </button>
+              <a href="#top">
                 <h1 className="text-2xl font-serif font-extrabold tracking-tight">
                   <span className="text-slate-900">WORUS</span>{" "}
                   <span className="text-brand-dark">NEWS</span>
                 </h1>
               </a>
-              <p className="text-[11px] text-slate-500 mt-1 uppercase tracking-[0.18em]">
-                As principais notícias de saúde e esporte, toda semana.
-              </p>
+
+              {/* Dropdown menu */}
+              {menuOpen && (
+                <div className="absolute top-full left-0 right-0 bg-white border-b border-slate-100 shadow-xl shadow-black/5 z-50">
+                  <div className="max-w-6xl mx-auto px-4 py-5">
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                        Categorias
+                      </p>
+                      <a
+                        href="#feed"
+                        onClick={() => handleCategoryClick(null)}
+                        className="text-xs font-bold text-brand hover:text-brand-dark transition-colors"
+                      >
+                        Ver todas →
+                      </a>
+                    </div>
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2">
+                      {Object.entries(CATEGORIES).map(([key, c]) => (
+                        <a
+                          key={key}
+                          href={`#cat-${key}`}
+                          onClick={() => handleCategoryClick(key)}
+                          className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl text-center transition-all ${
+                            activeCategory === key
+                              ? "bg-brand text-white shadow-md shadow-brand/20"
+                              : "bg-slate-50 text-slate-600 hover:bg-brand/10 hover:text-brand-dark"
+                          }`}
+                        >
+                          <span className="text-2xl">{c.emoji}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider leading-tight">
+                            {c.label}
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="text-left md:text-right">
+            <div className="text-right">
               <p className="text-sm font-medium">Edição de 24 de Maio, 2024</p>
               <p className="text-xs text-slate-400">Atualizado há 2 horas</p>
             </div>
           </div>
-        </div>
-
-        <div className="border-t border-slate-100 overflow-x-auto">
-          <div className="max-w-6xl mx-auto px-4 py-3 flex gap-2 text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-            <a
-              href="#feed"
-              onClick={() => handleCategoryClick(null)}
-              className={`px-4 py-1.5 rounded-full transition-colors ${
-                activeCategory === null
-                  ? "bg-brand text-white"
-                  : "bg-slate-100 text-slate-500 hover:bg-brand/10 hover:text-brand-dark"
-              }`}
-            >
-              Tudo
-            </a>
-            {Object.entries(CATEGORIES).map(([key, c]) => (
-              <a
-                key={key}
-                href={`#cat-${key}`}
-                onClick={() => handleCategoryClick(key)}
-                className={`px-4 py-1.5 rounded-full transition-colors ${
-                  activeCategory === key
-                    ? "bg-brand text-white"
-                    : "bg-slate-100 text-slate-500 hover:bg-brand/10 hover:text-brand-dark"
-                }`}
-              >
-                {c.label}
-              </a>
-            ))}
-          </div>
+          <p className="text-[11px] text-slate-500 mt-1 uppercase tracking-[0.18em]">
+            As principais notícias de saúde e esporte, toda semana.
+          </p>
         </div>
       </header>
 
